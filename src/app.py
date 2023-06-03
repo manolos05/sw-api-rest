@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, abort
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -58,7 +58,14 @@ def handle_people():
     })
     return jsonify(result)
 
-@app.route('/people', methods=['GET'])
+@app.route('/people/<string:people_id>', methods=['GET'])
+def get_people(people_id):
+    peopl = People.query.get(people_id)
+    if peopl is None:
+        abort(404)
+    return jsonify(peopl.serialize())
+
+@app.route('/planet', methods=['GET'])
 def handle_planet():
     planets = Planet.query.all()
     result = []
@@ -69,6 +76,14 @@ def handle_planet():
     'climate': plant.climate,
     })
     return jsonify(result)
+
+
+@app.route('/planet/<string:planet_id>', methods=['GET'])
+def get_planet(planet_id):
+    plant = People.query.get(planet_id)
+    if plant is None:
+        abort(404)
+    return jsonify(plant.serialize())
 
 
 
