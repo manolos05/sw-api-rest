@@ -32,7 +32,7 @@ class Planet(db.Model):
     def serialize(self):
         return {
             "planet_id": self.planet_id,
-            "name": self.name_planet,
+            "name_planet": self.name_planet,
             "population": self.population,
             "climate": self.climate,
         }
@@ -49,7 +49,7 @@ class People(db.Model):
     def serialize(self):
         return {
             "characeteres_id": self.characeteres_id,
-            "name": self.name_people,
+            "name_people": self.name_people,
             "age": self.age,
             "born_date": self.born_date,
         }

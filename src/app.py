@@ -52,11 +52,25 @@ def handle_people():
     result = []
     for peopl in peoples: result.append({
     'characeteres_id': peopl.characeteres_id,
-    'name': peopl.name,
+    'name_people': peopl.name_people,
     'age': peopl.age,
     'born_date': peopl.born_date,
     })
     return jsonify(result)
+
+@app.route('/people', methods=['GET'])
+def handle_planet():
+    planets = Planet.query.all()
+    result = []
+    for plant in planets: result.append({
+    'planet_id': plant.planet_id,
+    'name_planet': plant.name_planet,
+    'population': plant.population,
+    'climate': plant.climate,
+    })
+    return jsonify(result)
+
+
 
 
 # this only runs if `$ python src/app.py` is executed
