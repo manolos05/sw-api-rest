@@ -46,6 +46,7 @@ def handle_hello():
     })
     return jsonify(result)
 
+
 @app.route('/people', methods=['GET'])
 def handle_people():
     peoples = People.query.all()

@@ -56,8 +56,7 @@ class People(db.Model):
         }
 
 class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
     planet_id = db.Column(db.Integer, db.ForeignKey(Planet.planet_id))
     people_id = db.Column(db.Integer, db.ForeignKey(People.characeteres_id))
 
@@ -66,6 +65,8 @@ class Favorite(db.Model):
 
     def serialize(self):
         return {
-            "id": self.id,
-            # do not serialize the password, its a security breach
+            "id": self.user_id,
+            "planet_id": self.planet_id,
+            "people_id": self.people_id,
+           
         }
