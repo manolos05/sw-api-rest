@@ -58,7 +58,6 @@ def handle_fav():
     })
     return jsonify(result)
 
-
 @app.route('/people', methods=['GET'])
 def handle_people():
     peoples = People.query.all()
@@ -90,10 +89,9 @@ def handle_planet():
     })
     return jsonify(result)
 
-
 @app.route('/planet/<string:planet_id>', methods=['GET'])
 def get_planet(planet_id):
-    plant = People.query.get(planet_id)
+    plant = Planet.query.get(planet_id)
     if plant is None:
         abort(404)
     return jsonify(plant.serialize())
