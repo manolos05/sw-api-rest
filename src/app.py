@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planet, People
+from models import db, User, Planet, People, Favorite
 #from models import Person
 
 app = Flask(__name__)
@@ -43,6 +43,18 @@ def handle_hello():
     for user in users: result.append({
     'id': user.id,
     'email': user.email
+    })
+    return jsonify(result)
+
+@app.route('/user/favorite', methods=['GET'])
+def handle_fav():
+    favs = Favorite.query.all()
+    result = []
+    for fav in favs: result.append({
+    'id': fav.id, 
+    'user-id': fav.user_id,
+    'planet_id': fav.planet_id,
+    'people_id': fav.people_id,
     })
     return jsonify(result)
 
