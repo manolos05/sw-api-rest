@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planet, People, Favorite
+from models import db, User, Planet, People, Favorite, Fav_Planet
 #from models import Person
 
 app = Flask(__name__)
@@ -95,6 +95,21 @@ def get_planet(planet_id):
     if plant is None:
         abort(404)
     return jsonify(plant.serialize())
+
+@app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
+def post_fav_planet(planet_id):
+    data = request.json
+    favorite = planet_id
+    user = data.user_id
+    favorite = Fav_Planet(
+        user_id = user,
+        planet_id = favorite
+    ) 
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify(Fav_Planet.serialize()), 200
+
 
 
 
