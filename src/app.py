@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planet, People, Favorite, Fav_Planet
+from models import db, User, Planet, People, Fav_Planet, Fav_People
 #from models import Person
 
 app = Flask(__name__)
@@ -48,13 +48,11 @@ def handle_hello():
 
 @app.route('/user/favorite', methods=['GET'])
 def handle_fav():
-    favs = Favorite.query.all()
+    favs = Fav_Planet.query.all()
     result = []
     for fav in favs: result.append({
-    'id': fav.id, 
-    'user-id': fav.user_id,
+    'user_id': fav.user_id,
     'planet_id': fav.planet_id,
-    'people_id': fav.people_id,
     })
     return jsonify(result)
 
@@ -98,18 +96,27 @@ def get_planet(planet_id):
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
 def post_fav_planet(planet_id):
-    data = request.json
-    favorite = planet_id
-    user = data.user_id
+    fav = planet_id
     favorite = Fav_Planet(
-        user_id = user,
-        planet_id = favorite
+        user_id = request.json["user_id"],
+        planet_id= fav
     ) 
     db.session.add(favorite)
     db.session.commit()
 
-    return jsonify(Fav_Planet.serialize()), 200
+    return jsonify(favorite.serialize()), 200
 
+@app.route('/favorite/people/<int:people_id>', methods=['POST'])
+def post_fav_people(characeteres_id):
+    fav = characeteres_id
+    favorite = Fav_People(
+        user_id = request.json["user_id"],
+        characeteres_id= fav
+    ) 
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
 
 
 
